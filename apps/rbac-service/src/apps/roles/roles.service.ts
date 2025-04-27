@@ -10,14 +10,19 @@ import { RoleRepository } from './repositories/role-repository.abstract';
 export class RolesService {
     constructor(private readonly roleRepository: RoleRepository) {}
 
+    /**
+     * Create a new role in the database.
+     * @param payload The role data to save
+     * @returns The saved role data
+     */
     async create(payload: CreateRoleDto): Promise<RoleResponse> {
-        const { name, isActive } = payload;
-        const existingRole = await this.roleRepository.findByName(name);
+        const { name, isActive }: CreateRoleDto = payload;
+        const existingRole: RoleEntity | null = await this.roleRepository.findByName(name);
         if (existingRole) {
             throw new RpcException(new ConflictException('Role already exists'));
         }
 
-        const roleEntity = new RoleEntity({ name, isActive });
+        const roleEntity: RoleEntity = new RoleEntity({ name, isActive });
         return await this.roleRepository.create(roleEntity);
     }
 }
