@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateRoleDto {
     @IsString()
@@ -7,6 +7,5 @@ export class CreateRoleDto {
     name: string;
 
     @Transform(({ value }) => value === 'true' || value === true)
-    @IsBoolean()
     isActive: boolean;
 }
