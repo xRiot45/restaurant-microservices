@@ -19,13 +19,13 @@
                 "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
             }
         },
-        "roles-service": {
+        "rbac-service": {
             "type": "application",
-            "root": "apps/roles-service",
-            "sourceRoot": "apps/roles-service/src",
+            "root": "apps/rbac-service",
+            "sourceRoot": "apps/rbac-service/src",
             "entryFile": "main",
             "compilerOptions": {
-                "tsConfigPath": "apps/roles-service/tsconfig.app.json"
+                "tsConfigPath": "apps/rbac-service/tsconfig.app.json"
             }
         }
     }

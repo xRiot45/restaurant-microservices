@@ -8,7 +8,7 @@ import { DatabaseModule } from './database/database.module';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: 'apps/roles-service/.env',
+            envFilePath: 'apps/rbac-service/.env',
         }),
         DatabaseModule,
         RolesModule,

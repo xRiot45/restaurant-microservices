@@ -7,7 +7,7 @@ import { RolesService } from './roles.service';
     imports: [
         ClientsModule.register([
             {
-                name: 'ROLES_SERVICE',
+                name: 'RBAC_SERVICE',
                 transport: Transport.TCP,
                 options: {
                     host: '127.0.0.1',

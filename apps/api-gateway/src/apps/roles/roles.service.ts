@@ -8,7 +8,7 @@ import { lastValueFrom } from 'rxjs';
 
 @Service()
 export class RolesService {
-    constructor(@Inject('ROLES_SERVICE') private client: ClientProxy) {}
+    constructor(@Inject('RBAC_SERVICE') private client: ClientProxy) {}
 
     async create(payload: CreateRoleDto): Promise<RoleResponse> {
         try {
