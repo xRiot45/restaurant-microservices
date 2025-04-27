@@ -4,7 +4,7 @@ import { Service } from 'libs/decorators/service.decorator';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { RoleEntity } from './entities/role.entity';
-import { RoleRepository } from './repositories/role.repository';
+import { RoleRepository } from './repositories/role-repository.abstract';
 
 @Service()
 export class RolesService {
@@ -18,6 +18,6 @@ export class RolesService {
         }
 
         const roleEntity = new RoleEntity({ name, isActive });
-        return await this.roleRepository.saveData(roleEntity);
+        return await this.roleRepository.create(roleEntity);
     }
 }

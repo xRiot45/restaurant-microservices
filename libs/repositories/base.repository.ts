@@ -1,7 +1,7 @@
-import { DataSource, EntityTarget, Repository as TypeOrmRepository } from 'typeorm';
-
-export class BaseRepository<T extends object> extends TypeOrmRepository<T> {
-    constructor(entity: EntityTarget<T>, dataSource: DataSource) {
-        super(entity, dataSource.createEntityManager());
-    }
+export abstract class BaseRepository<T> {
+    abstract create(data: Partial<T>): Promise<T>;
+    abstract findAll(): Promise<T[]>;
+    abstract findOne(id: number): Promise<T | null>;
+    abstract update(id: number, data: Partial<T>): Promise<T>;
+    abstract delete(id: number): Promise<void>;
 }
