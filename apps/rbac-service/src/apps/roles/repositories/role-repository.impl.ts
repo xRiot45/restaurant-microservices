@@ -19,12 +19,51 @@ export class RoleRepositoryImpl extends RoleRepository {
         return await this.roleRepository.findOneBy({ name });
     }
 
-    findAll(): Promise<RoleEntity[]> {
-        throw new Error('Method not implemented.');
+    async findAll(): Promise<RoleEntity[]> {
+        return this.roleRepository.find();
     }
 
-    findOne(id: number): Promise<RoleEntity> {
-        throw new Error('Method not implemented.');
+    async findAllWithPaginate(options: {
+        page: number;
+        limit: number;
+        sortBy: string[];
+        search: string;
+        filter?: { [key: string]: string };
+    }): Promise<[RoleEntity[], number]> {
+        const { page, limit, sortBy, search, filter } = options;
+        const queryBuilder = this.roleRepository.createQueryBuilder('role');
+
+        // Search function by name
+        if (search) {
+            queryBuilder.andWhere('role.name LIKE :search', {
+                search: `%${search}%`,
+            });
+        }
+
+        // Filter function by field
+        if (filter && Object.keys(filter).length > 0) {
+            Object.keys(filter).forEach((key) => {
+                queryBuilder.andWhere(`role.${key} = :${key}`, { [key]: filter[key] });
+            });
+        }
+
+        // Sorting function by ASCENDING and DESCENDING
+        if (sortBy) {
+            sortBy.forEach((sort) => {
+                const [field, order = 'ASC'] = sort.split(':');
+                if (field && order) {
+                    queryBuilder.addOrderBy(`role.${field}`, order.toUpperCase() as 'ASC' | 'DESC');
+                }
+            });
+        }
+
+        // Pagination
+        queryBuilder.skip((page - 1) * limit).take(limit);
+        return await queryBuilder.getManyAndCount();
+    }
+
+    async findOne(id: number): Promise<RoleEntity> {
+        return await this.roleRepository.findOneBy({ id });
     }
 
     update(id: number, data: Partial<RoleEntity>): Promise<RoleEntity> {

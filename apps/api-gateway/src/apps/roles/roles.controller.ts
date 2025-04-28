@@ -1,6 +1,8 @@
-import { Body, Controller, Post, Version } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Version } from '@nestjs/common';
+import { Request } from 'express';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
+import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import { RolesService } from './roles.service';
 
 @Controller('roles')
@@ -11,5 +13,11 @@ export class RolesController {
     @Version('1')
     async create(@Body() payload: CreateRoleDto): Promise<RoleResponse> {
         return await this.rolesService.create(payload);
+    }
+
+    @Get()
+    @Version('1')
+    async findAll(@Req() req: Request, @Query() query: PaginationQuery): Promise<PaginatedResponse<RoleResponse>> {
+        return await this.rolesService.findAll(req, query);
     }
 }
