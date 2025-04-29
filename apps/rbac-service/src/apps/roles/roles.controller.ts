@@ -23,4 +23,9 @@ export class RolesController {
         const parsedQuery = parsePaginationQuery(payload.request.query);
         return this.rolesService.findAll(parsedQuery, payload.request);
     }
+
+    @MessagePattern({ cmd: 'findById-role' })
+    async findById(@Payload() roleId: number): Promise<RoleResponse> {
+        return await this.rolesService.findById(roleId);
+    }
 }

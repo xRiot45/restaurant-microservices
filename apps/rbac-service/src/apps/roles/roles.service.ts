@@ -1,4 +1,4 @@
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Service } from 'libs/decorators/service.decorator';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
@@ -72,5 +72,14 @@ export class RolesService {
                 last: buildPaginationLink({ baseUrl, page: totalPages, limit, sortBy: sortArray, search, filter }),
             },
         };
+    }
+
+    async findById(roleId: number): Promise<RoleResponse> {
+        const role: RoleEntity = await this.roleRepository.findOne(roleId);
+        if (!role) {
+            throw new RpcException(new NotFoundException('Role not found!'));
+        }
+
+        return role;
     }
 }

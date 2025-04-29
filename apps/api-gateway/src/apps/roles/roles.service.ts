@@ -35,4 +35,12 @@ export class RolesService {
             throw mapRpcToHttpException(error);
         }
     }
+
+    async findById(roleId: number): Promise<RoleResponse> {
+        try {
+            return await lastValueFrom(this.client.send({ cmd: 'findById-role' }, roleId));
+        } catch (error) {
+            throw mapRpcToHttpException(error);
+        }
+    }
 }
