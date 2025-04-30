@@ -66,8 +66,9 @@ export class RoleRepositoryImpl extends RoleRepository {
         return await this.roleRepository.findOneBy({ id });
     }
 
-    update(id: number, data: Partial<RoleEntity>): Promise<RoleEntity> {
-        throw new Error('Method not implemented.');
+    async update(id: number, data: Partial<RoleEntity>): Promise<RoleEntity> {
+        await this.roleRepository.update(id, data);
+        return await this.roleRepository.findOneBy({ id });
     }
 
     delete(id: number): Promise<void> {

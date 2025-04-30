@@ -3,6 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Service } from 'libs/decorators/service.decorator';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
+import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import buildPaginationLink from 'libs/helpers/build-pagination-link.helper';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
@@ -81,5 +82,22 @@ export class RolesService {
         }
 
         return role;
+    }
+
+    async update(roleId: number, payload: UpdateRoleDto): Promise<RoleResponse> {
+        const { name, isActive } = payload;
+        const role: RoleEntity = await this.roleRepository.findOne(roleId);
+        if (!role) {
+            throw new RpcException(new NotFoundException('Role not found!'));
+        }
+
+        const existingRole = await this.roleRepository.findByName(name);
+        if (existingRole && existingRole.id !== roleId) {
+            throw new ConflictException('Role already exists');
+        }
+
+        role.name = name;
+        role.isActive = isActive;
+        return await this.roleRepository.update(roleId, role);
     }
 }

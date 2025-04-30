@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, Query, Req, Version } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, Req, Version } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
+import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import { RolesService } from './roles.service';
 
@@ -25,5 +26,11 @@ export class RolesController {
     @Version('1')
     async findById(@Param('roleId') roleId: number): Promise<RoleResponse> {
         return await this.rolesService.findById(roleId);
+    }
+
+    @Patch('/:roleId')
+    @Version('1')
+    async update(@Param('roleId') roleId: number, @Body() payload: UpdateRoleDto): Promise<RoleResponse> {
+        return await this.rolesService.update(roleId, payload);
     }
 }

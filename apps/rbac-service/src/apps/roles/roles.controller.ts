@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
+import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import parsePaginationQuery from 'libs/helpers/parse-pagination-query.helper';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
@@ -27,5 +28,11 @@ export class RolesController {
     @MessagePattern({ cmd: 'findById-role' })
     async findById(@Payload() roleId: number): Promise<RoleResponse> {
         return await this.rolesService.findById(roleId);
+    }
+
+    @MessagePattern({ cmd: 'update-role' })
+    async update(@Payload() data: { roleId: number; payload: UpdateRoleDto }): Promise<RoleResponse> {
+        const { roleId, payload } = data;
+        return await this.rolesService.update(roleId, payload);
     }
 }

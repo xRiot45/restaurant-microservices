@@ -4,6 +4,7 @@ import { Request } from 'express';
 import { Service } from 'libs/decorators/service.decorator';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
+import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import { mapRpcToHttpException } from 'libs/helpers/rpc-exception.helper';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
@@ -39,6 +40,14 @@ export class RolesService {
     async findById(roleId: number): Promise<RoleResponse> {
         try {
             return await lastValueFrom(this.client.send({ cmd: 'findById-role' }, roleId));
+        } catch (error) {
+            throw mapRpcToHttpException(error);
+        }
+    }
+
+    async update(roleId: number, payload: UpdateRoleDto): Promise<RoleResponse> {
+        try {
+            return await lastValueFrom(this.client.send({ cmd: 'update-role' }, { roleId, payload }));
         } catch (error) {
             throw mapRpcToHttpException(error);
         }
