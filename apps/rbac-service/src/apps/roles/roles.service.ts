@@ -5,6 +5,7 @@ import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import buildPaginationLink from 'libs/helpers/build-pagination-link.helper';
+import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { RoleEntity } from './entities/role.entity';
@@ -99,5 +100,17 @@ export class RolesService {
         role.name = name;
         role.isActive = isActive;
         return await this.roleRepository.update(roleId, role);
+    }
+
+    async softDelete(roleId: number): Promise<DeleteResponse> {
+        const role: RoleEntity = await this.roleRepository.findOne(roleId);
+        if (!role) {
+            throw new RpcException(new NotFoundException('Role not found!'));
+        }
+
+        await this.roleRepository.softDelete(roleId);
+        return {
+            status: true,
+        };
     }
 }

@@ -6,6 +6,7 @@ import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import { mapRpcToHttpException } from 'libs/helpers/rpc-exception.helper';
+import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { lastValueFrom } from 'rxjs';
@@ -48,6 +49,14 @@ export class RolesService {
     async update(roleId: number, payload: UpdateRoleDto): Promise<RoleResponse> {
         try {
             return await lastValueFrom(this.client.send({ cmd: 'update-role' }, { roleId, payload }));
+        } catch (error) {
+            throw mapRpcToHttpException(error);
+        }
+    }
+
+    async softDelete(roleId: number): Promise<DeleteResponse> {
+        try {
+            return await lastValueFrom(this.client.send({ cmd: 'softDelete-role' }, roleId));
         } catch (error) {
             throw mapRpcToHttpException(error);
         }

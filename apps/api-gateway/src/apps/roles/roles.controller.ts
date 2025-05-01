@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Req, Version } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Version } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
+import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import { RolesService } from './roles.service';
 
@@ -32,5 +33,11 @@ export class RolesController {
     @Version('1')
     async update(@Param('roleId') roleId: number, @Body() payload: UpdateRoleDto): Promise<RoleResponse> {
         return await this.rolesService.update(roleId, payload);
+    }
+
+    @Delete('/soft-delete/:roleId')
+    @Version('1')
+    async softDelete(@Param('roleId') roleId: number): Promise<DeleteResponse> {
+        return await this.rolesService.softDelete(roleId);
     }
 }

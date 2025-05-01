@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'libs/decorators/repository.decorator';
 import { Repository as TypeOrmRepository } from 'typeorm';
@@ -71,7 +70,15 @@ export class RoleRepositoryImpl extends RoleRepository {
         return await this.roleRepository.findOneBy({ id });
     }
 
-    delete(id: number): Promise<void> {
-        throw new Error('Method not implemented.');
+    async softDelete(id: number): Promise<void> {
+        await this.roleRepository.softDelete(id);
+    }
+
+    async hardDelete(id: number): Promise<void> {
+        await this.roleRepository.delete(id);
+    }
+
+    async restore(id: number): Promise<void> {
+        await this.roleRepository.restore(id);
     }
 }

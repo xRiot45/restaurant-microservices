@@ -4,6 +4,7 @@ import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import parsePaginationQuery from 'libs/helpers/parse-pagination-query.helper';
+import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { RolesService } from './roles.service';
@@ -34,5 +35,10 @@ export class RolesController {
     async update(@Payload() data: { roleId: number; payload: UpdateRoleDto }): Promise<RoleResponse> {
         const { roleId, payload } = data;
         return await this.rolesService.update(roleId, payload);
+    }
+
+    @MessagePattern({ cmd: 'softDelete-role' })
+    async softDelete(@Payload() roleId: number): Promise<DeleteResponse> {
+        return await this.rolesService.softDelete(roleId);
     }
 }
