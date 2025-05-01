@@ -69,4 +69,12 @@ export class RolesService {
             throw mapRpcToHttpException(error);
         }
     }
+
+    async restoreData(roleId: number): Promise<RoleResponse> {
+        try {
+            return await lastValueFrom(this.client.send({ cmd: 'restore-role' }, roleId));
+        } catch (error) {
+            throw mapRpcToHttpException(error);
+        }
+    }
 }

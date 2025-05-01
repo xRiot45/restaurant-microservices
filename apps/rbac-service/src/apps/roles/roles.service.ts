@@ -125,4 +125,14 @@ export class RolesService {
             status: true,
         };
     }
+
+    async restoreData(roleId: number): Promise<RoleResponse> {
+        const role: RoleEntity = await this.roleRepository.findDataWithDeleted(roleId);
+        if (!role) {
+            throw new RpcException(new NotFoundException('Role not found!'));
+        }
+
+        await this.roleRepository.restore(roleId);
+        return role;
+    }
 }

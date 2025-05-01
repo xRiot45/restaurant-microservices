@@ -79,6 +79,18 @@ export class RoleRepositoryImpl extends RoleRepository {
     }
 
     async restore(id: number): Promise<void> {
-        await this.roleRepository.restore(id);
+        const role: RoleEntity = await this.roleRepository.findOne({
+            where: { id },
+            withDeleted: true,
+        });
+
+        await this.roleRepository.restore(role.id);
+    }
+
+    async findDataWithDeleted(id: number): Promise<RoleEntity> {
+        return await this.roleRepository.findOne({
+            where: { id },
+            withDeleted: true,
+        });
     }
 }

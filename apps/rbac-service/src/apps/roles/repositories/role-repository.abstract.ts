@@ -10,4 +10,5 @@ export abstract class RoleRepository extends BaseRepository<RoleEntity> {
         search: string;
         filter?: { [key: string]: string };
     }): Promise<[RoleEntity[], number]>;
+    abstract findDataWithDeleted(id: number): Promise<RoleEntity>;
 }

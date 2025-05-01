@@ -46,4 +46,10 @@ export class RolesController {
     async hardDelete(@Param('roleId') roleId: number): Promise<DeleteResponse> {
         return await this.rolesService.hardDelete(roleId);
     }
+
+    @Patch('/restore/:roleId')
+    @Version('1')
+    async restoreData(@Param('roleId') roleId: number): Promise<RoleResponse> {
+        return await this.rolesService.restoreData(roleId);
+    }
 }
