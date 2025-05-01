@@ -61,4 +61,12 @@ export class RolesService {
             throw mapRpcToHttpException(error);
         }
     }
+
+    async hardDelete(roleId: number): Promise<DeleteResponse> {
+        try {
+            return await lastValueFrom(this.client.send({ cmd: 'hardDelete-role' }, roleId));
+        } catch (error) {
+            throw mapRpcToHttpException(error);
+        }
+    }
 }

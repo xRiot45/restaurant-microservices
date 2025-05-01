@@ -40,4 +40,10 @@ export class RolesController {
     async softDelete(@Param('roleId') roleId: number): Promise<DeleteResponse> {
         return await this.rolesService.softDelete(roleId);
     }
+
+    @Delete('/hard-delete/:roleId')
+    @Version('1')
+    async hardDelete(@Param('roleId') roleId: number): Promise<DeleteResponse> {
+        return await this.rolesService.hardDelete(roleId);
+    }
 }

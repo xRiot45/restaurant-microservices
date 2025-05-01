@@ -113,4 +113,16 @@ export class RolesService {
             status: true,
         };
     }
+
+    async hardDelete(roleId: number): Promise<DeleteResponse> {
+        const role: RoleEntity = await this.roleRepository.findOne(roleId);
+        if (!role) {
+            throw new RpcException(new NotFoundException('Role not found!'));
+        }
+
+        await this.roleRepository.hardDelete(roleId);
+        return {
+            status: true,
+        };
+    }
 }
