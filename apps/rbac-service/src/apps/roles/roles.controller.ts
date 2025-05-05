@@ -10,6 +10,7 @@ import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { CreateRoleCommand } from './commands/impl/create-role.command';
 import { FindAllRoleQuery } from './queries/impl/findAll-role.query';
+import { FindByIdRoleQuery } from './queries/impl/findById-role.query';
 import { RolesService } from './roles.service';
 
 @Controller()
@@ -45,7 +46,7 @@ export class RolesController {
 
     @MessagePattern({ cmd: 'findById-role' })
     async findById(@Payload() roleId: number): Promise<RoleResponse> {
-        return await this.rolesService.findById(roleId);
+        return await this.queryBus.execute(new FindByIdRoleQuery(roleId));
     }
 
     @MessagePattern({ cmd: 'update-role' })

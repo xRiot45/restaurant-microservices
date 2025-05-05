@@ -3,10 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Service } from 'libs/decorators/service.decorator';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
-import buildPaginationLink from 'libs/helpers/build-pagination-link.helper';
 import { DeleteResponse } from 'libs/types';
-import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
-import type { MinimalRequestInfo } from 'libs/types/request';
 import { RoleEntity } from './entities/role.entity';
 import { RoleRepository } from './repositories/role-repository.abstract';
 
@@ -25,55 +22,55 @@ export class RolesService {
     //     return await this.roleRepository.create(roleEntity);
     // }
 
-    async findAll(query: PaginationQuery, request: MinimalRequestInfo): Promise<PaginatedResponse<RoleResponse>> {
-        const { page, limit, sortBy, search, filter } = query;
+    // async findAll(query: PaginationQuery, request: MinimalRequestInfo): Promise<PaginatedResponse<RoleResponse>> {
+    //     const { page, limit, sortBy, search, filter } = query;
 
-        const sortArray = sortBy ? sortBy.split(',') : [];
-        const [items, total] = await this.roleRepository.findAllWithPaginate({
-            page,
-            limit,
-            sortBy: sortArray,
-            search,
-            filter,
-        });
+    //     const sortArray = sortBy ? sortBy.split(',') : [];
+    //     const [items, total] = await this.roleRepository.findAllWithPaginate({
+    //         page,
+    //         limit,
+    //         sortBy: sortArray,
+    //         search,
+    //         filter,
+    //     });
 
-        const totalPages = Math.ceil(total / limit);
-        const baseUrl = `${request.protocol}://${request.host}${request.path}`;
+    //     const totalPages = Math.ceil(total / limit);
+    //     const baseUrl = `${request.protocol}://${request.host}${request.path}`;
 
-        return {
-            items,
-            meta: {
-                itemsPerPage: limit,
-                totalItems: total,
-                currentPage: page,
-                totalPages,
-                sortBy: sortArray.map((s) => s.split(':') as [string, 'ASC' | 'DESC']),
-                search,
-                filter,
-            },
-            links: {
-                first: buildPaginationLink({ baseUrl, page: 1, limit, sortBy: sortArray, search, filter }),
-                previous: buildPaginationLink({
-                    baseUrl,
-                    page: Math.max(1, page - 1),
-                    limit,
-                    sortBy: sortArray,
-                    search,
-                    filter,
-                }),
-                current: buildPaginationLink({ baseUrl, page, limit, sortBy: sortArray, search, filter }),
-                next: buildPaginationLink({
-                    baseUrl,
-                    page: Math.min(totalPages, page + 1),
-                    limit,
-                    sortBy: sortArray,
-                    search,
-                    filter,
-                }),
-                last: buildPaginationLink({ baseUrl, page: totalPages, limit, sortBy: sortArray, search, filter }),
-            },
-        };
-    }
+    //     return {
+    //         items,
+    //         meta: {
+    //             itemsPerPage: limit,
+    //             totalItems: total,
+    //             currentPage: page,
+    //             totalPages,
+    //             sortBy: sortArray.map((s) => s.split(':') as [string, 'ASC' | 'DESC']),
+    //             search,
+    //             filter,
+    //         },
+    //         links: {
+    //             first: buildPaginationLink({ baseUrl, page: 1, limit, sortBy: sortArray, search, filter }),
+    //             previous: buildPaginationLink({
+    //                 baseUrl,
+    //                 page: Math.max(1, page - 1),
+    //                 limit,
+    //                 sortBy: sortArray,
+    //                 search,
+    //                 filter,
+    //             }),
+    //             current: buildPaginationLink({ baseUrl, page, limit, sortBy: sortArray, search, filter }),
+    //             next: buildPaginationLink({
+    //                 baseUrl,
+    //                 page: Math.min(totalPages, page + 1),
+    //                 limit,
+    //                 sortBy: sortArray,
+    //                 search,
+    //                 filter,
+    //             }),
+    //             last: buildPaginationLink({ baseUrl, page: totalPages, limit, sortBy: sortArray, search, filter }),
+    //         },
+    //     };
+    // }
 
     async findById(roleId: number): Promise<RoleResponse> {
         const role: RoleEntity = await this.roleRepository.findOne(roleId);
