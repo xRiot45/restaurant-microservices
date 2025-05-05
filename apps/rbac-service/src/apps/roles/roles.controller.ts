@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
@@ -9,12 +9,14 @@ import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { CreateRoleCommand } from './commands/impl/create-role.command';
+import { FindAllRoleQuery } from './queries/impl/findAll-role.query';
 import { RolesService } from './roles.service';
 
 @Controller()
 export class RolesController {
     constructor(
         private readonly commandBus: CommandBus,
+        private readonly queryBus: QueryBus,
         private readonly rolesService: RolesService,
     ) {}
 
@@ -29,7 +31,16 @@ export class RolesController {
         @Payload() payload: { query: PaginationQuery; request: MinimalRequestInfo },
     ): Promise<PaginatedResponse<RoleResponse>> {
         const parsedQuery = parsePaginationQuery(payload.request.query);
-        return this.rolesService.findAll(parsedQuery, payload.request);
+        const findAllRoleQuery = new FindAllRoleQuery(
+            parsedQuery.page,
+            parsedQuery.limit,
+            [parsedQuery.sortBy],
+            parsedQuery.search,
+            parsedQuery.filter,
+            `${payload.request.protocol}://${payload.request.host}${payload.request.path}`,
+        );
+
+        return this.queryBus.execute(findAllRoleQuery);
     }
 
     @MessagePattern({ cmd: 'findById-role' })

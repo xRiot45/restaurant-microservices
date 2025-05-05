@@ -1,7 +1,6 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Service } from 'libs/decorators/service.decorator';
-import { CreateRoleDto } from 'libs/dtos/roles-dto/create-role.dto';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
 import { UpdateRoleDto } from 'libs/dtos/roles-dto/update-role.dto';
 import buildPaginationLink from 'libs/helpers/build-pagination-link.helper';
@@ -15,16 +14,16 @@ import { RoleRepository } from './repositories/role-repository.abstract';
 export class RolesService {
     constructor(private readonly roleRepository: RoleRepository) {}
 
-    async create(payload: CreateRoleDto): Promise<RoleResponse> {
-        const { name, isActive }: CreateRoleDto = payload;
-        const existingRole: RoleEntity | null = await this.roleRepository.findByName(name);
-        if (existingRole) {
-            throw new RpcException(new ConflictException('Role already exists'));
-        }
+    // async create(payload: CreateRoleDto): Promise<RoleResponse> {
+    //     const { name, isActive }: CreateRoleDto = payload;
+    //     const existingRole: RoleEntity | null = await this.roleRepository.findByName(name);
+    //     if (existingRole) {
+    //         throw new RpcException(new ConflictException('Role already exists'));
+    //     }
 
-        const roleEntity: RoleEntity = new RoleEntity({ name, isActive });
-        return await this.roleRepository.create(roleEntity);
-    }
+    //     const roleEntity: RoleEntity = new RoleEntity({ name, isActive });
+    //     return await this.roleRepository.create(roleEntity);
+    // }
 
     async findAll(query: PaginationQuery, request: MinimalRequestInfo): Promise<PaginatedResponse<RoleResponse>> {
         const { page, limit, sortBy, search, filter } = query;
