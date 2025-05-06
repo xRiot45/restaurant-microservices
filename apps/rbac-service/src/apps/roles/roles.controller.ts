@@ -9,6 +9,7 @@ import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { CreateRoleCommand } from './commands/impl/create-role.command';
+import { SoftDeleteRoleCommand } from './commands/impl/softDelete-role.command';
 import { UpdateRoleCommand } from './commands/impl/update-role.command';
 import { FindAllRoleQuery } from './queries/impl/findAll-role.query';
 import { FindByIdRoleQuery } from './queries/impl/findById-role.query';
@@ -59,7 +60,7 @@ export class RolesController {
 
     @MessagePattern({ cmd: 'softDelete-role' })
     async softDelete(@Payload() roleId: number): Promise<DeleteResponse> {
-        return await this.rolesService.softDelete(roleId);
+        return this.commandBus.execute(new SoftDeleteRoleCommand(roleId));
     }
 
     @MessagePattern({ cmd: 'hardDelete-role' })
