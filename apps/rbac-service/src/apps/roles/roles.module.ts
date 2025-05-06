@@ -13,6 +13,16 @@ import { RoleRepository } from './repositories/role-repository.abstract';
 import { RoleRepositoryImpl } from './repositories/role-repository.impl';
 import { RolesController } from './roles.controller';
 
+const CommandHandlers = [
+    CreateRoleHandler,
+    UpdateRoleHandler,
+    SoftDeleteRoleHandler,
+    HardDeleteRoleHandler,
+    RestoreDataRoleHandler,
+];
+
+const QueryHandlers = [FindAllRoleHandler, FindByIdRoleHandler];
+
 @Module({
     imports: [TypeOrmModule.forFeature([RoleEntity]), CqrsModule],
     providers: [
@@ -20,13 +30,8 @@ import { RolesController } from './roles.controller';
             provide: RoleRepository,
             useClass: RoleRepositoryImpl,
         },
-        CreateRoleHandler,
-        FindAllRoleHandler,
-        FindByIdRoleHandler,
-        UpdateRoleHandler,
-        SoftDeleteRoleHandler,
-        HardDeleteRoleHandler,
-        RestoreDataRoleHandler,
+        ...CommandHandlers,
+        ...QueryHandlers,
     ],
     controllers: [RolesController],
 })
