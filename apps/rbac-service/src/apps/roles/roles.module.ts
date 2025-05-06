@@ -12,12 +12,10 @@ import { FindByIdRoleHandler } from './queries/handlers/findById-role.handler';
 import { RoleRepository } from './repositories/role-repository.abstract';
 import { RoleRepositoryImpl } from './repositories/role-repository.impl';
 import { RolesController } from './roles.controller';
-import { RolesService } from './roles.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([RoleEntity]), CqrsModule],
     providers: [
-        RolesService,
         {
             provide: RoleRepository,
             useClass: RoleRepositoryImpl,
