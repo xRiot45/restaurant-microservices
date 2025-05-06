@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateRoleHandler } from './commands/handlers/create-role.handler';
+import { UpdateRoleHandler } from './commands/handlers/update-role.handler';
 import { RoleEntity } from './entities/role.entity';
 import { FindAllRoleHandler } from './queries/handlers/findAll-role.handler';
 import { FindByIdRoleHandler } from './queries/handlers/findById-role.handler';
@@ -21,6 +22,7 @@ import { RolesService } from './roles.service';
         CreateRoleHandler,
         FindAllRoleHandler,
         FindByIdRoleHandler,
+        UpdateRoleHandler,
     ],
     controllers: [RolesController],
 })

@@ -9,6 +9,7 @@ import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { CreateRoleCommand } from './commands/impl/create-role.command';
+import { UpdateRoleCommand } from './commands/impl/update-role.command';
 import { FindAllRoleQuery } from './queries/impl/findAll-role.query';
 import { FindByIdRoleQuery } from './queries/impl/findById-role.query';
 import { RolesService } from './roles.service';
@@ -50,9 +51,10 @@ export class RolesController {
     }
 
     @MessagePattern({ cmd: 'update-role' })
-    async update(@Payload() data: { roleId: number; payload: UpdateRoleDto }): Promise<RoleResponse> {
-        const { roleId, payload } = data;
-        return await this.rolesService.update(roleId, payload);
+    async updateRole(
+        @Payload() { roleId, payload }: { roleId: number; payload: UpdateRoleDto },
+    ): Promise<RoleResponse> {
+        return this.commandBus.execute(new UpdateRoleCommand(roleId, payload.name, payload.isActive));
     }
 
     @MessagePattern({ cmd: 'softDelete-role' })
