@@ -2,7 +2,6 @@ import { NotFoundException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Service } from 'libs/decorators/service.decorator';
 import { RoleResponse } from 'libs/dtos/roles-dto/role.dto';
-import { DeleteResponse } from 'libs/types';
 import { RoleEntity } from './entities/role.entity';
 import { RoleRepository } from './repositories/role-repository.abstract';
 
@@ -109,17 +108,17 @@ export class RolesService {
     //     };
     // }
 
-    async hardDelete(roleId: number): Promise<DeleteResponse> {
-        const role: RoleEntity = await this.roleRepository.findOne(roleId);
-        if (!role) {
-            throw new RpcException(new NotFoundException('Role not found!'));
-        }
+    // async hardDelete(roleId: number): Promise<DeleteResponse> {
+    //     const role: RoleEntity = await this.roleRepository.findOne(roleId);
+    //     if (!role) {
+    //         throw new RpcException(new NotFoundException('Role not found!'));
+    //     }
 
-        await this.roleRepository.hardDelete(roleId);
-        return {
-            status: true,
-        };
-    }
+    //     await this.roleRepository.hardDelete(roleId);
+    //     return {
+    //         status: true,
+    //     };
+    // }
 
     async restoreData(roleId: number): Promise<RoleResponse> {
         const role: RoleEntity = await this.roleRepository.findDataWithDeleted(roleId);

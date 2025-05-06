@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateRoleHandler } from './commands/handlers/create-role.handler';
 import { HardDeleteRoleHandler } from './commands/handlers/hardDelete.handler';
+import { RestoreDataRoleHandler } from './commands/handlers/restoreData.handler';
 import { SoftDeleteRoleHandler } from './commands/handlers/softDelete-role.handler';
 import { UpdateRoleHandler } from './commands/handlers/update-role.handler';
 import { RoleEntity } from './entities/role.entity';
@@ -27,6 +28,7 @@ import { RolesService } from './roles.service';
         UpdateRoleHandler,
         SoftDeleteRoleHandler,
         HardDeleteRoleHandler,
+        RestoreDataRoleHandler,
     ],
     controllers: [RolesController],
 })

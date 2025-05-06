@@ -10,18 +10,17 @@ import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { CreateRoleCommand } from './commands/impl/create-role.command';
 import { HardDeleteRoleCommand } from './commands/impl/hardDelete.command';
+import { RestoreDataRoleCommand } from './commands/impl/restoreData.command';
 import { SoftDeleteRoleCommand } from './commands/impl/softDelete-role.command';
 import { UpdateRoleCommand } from './commands/impl/update-role.command';
 import { FindAllRoleQuery } from './queries/impl/findAll-role.query';
 import { FindByIdRoleQuery } from './queries/impl/findById-role.query';
-import { RolesService } from './roles.service';
 
 @Controller()
 export class RolesController {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
-        private readonly rolesService: RolesService,
     ) {}
 
     @MessagePattern({ cmd: 'create-role' })
@@ -71,6 +70,6 @@ export class RolesController {
 
     @MessagePattern({ cmd: 'restore-role' })
     async restoreData(@Payload() roleId: number): Promise<RoleResponse> {
-        return await this.rolesService.restoreData(roleId);
+        return await this.commandBus.execute(new RestoreDataRoleCommand(roleId));
     }
 }
