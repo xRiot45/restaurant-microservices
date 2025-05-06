@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateRoleHandler } from './commands/handlers/create-role.handler';
+import { HardDeleteRoleHandler } from './commands/handlers/hardDelete.handler';
 import { SoftDeleteRoleHandler } from './commands/handlers/softDelete-role.handler';
 import { UpdateRoleHandler } from './commands/handlers/update-role.handler';
 import { RoleEntity } from './entities/role.entity';
@@ -25,6 +26,7 @@ import { RolesService } from './roles.service';
         FindByIdRoleHandler,
         UpdateRoleHandler,
         SoftDeleteRoleHandler,
+        HardDeleteRoleHandler,
     ],
     controllers: [RolesController],
 })
