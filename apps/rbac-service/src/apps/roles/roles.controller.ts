@@ -9,6 +9,7 @@ import { DeleteResponse } from 'libs/types';
 import type { PaginatedResponse, PaginationQuery } from 'libs/types/pagination';
 import type { MinimalRequestInfo } from 'libs/types/request';
 import { CreateRoleCommand } from './commands/impl/create-role.command';
+import { HardDeleteRoleCommand } from './commands/impl/hardDelete.command';
 import { SoftDeleteRoleCommand } from './commands/impl/softDelete-role.command';
 import { UpdateRoleCommand } from './commands/impl/update-role.command';
 import { FindAllRoleQuery } from './queries/impl/findAll-role.query';
@@ -55,17 +56,17 @@ export class RolesController {
     async updateRole(
         @Payload() { roleId, payload }: { roleId: number; payload: UpdateRoleDto },
     ): Promise<RoleResponse> {
-        return this.commandBus.execute(new UpdateRoleCommand(roleId, payload.name, payload.isActive));
+        return await this.commandBus.execute(new UpdateRoleCommand(roleId, payload.name, payload.isActive));
     }
 
     @MessagePattern({ cmd: 'softDelete-role' })
     async softDelete(@Payload() roleId: number): Promise<DeleteResponse> {
-        return this.commandBus.execute(new SoftDeleteRoleCommand(roleId));
+        return await this.commandBus.execute(new SoftDeleteRoleCommand(roleId));
     }
 
     @MessagePattern({ cmd: 'hardDelete-role' })
     async hardDelete(@Payload() roleId: number): Promise<DeleteResponse> {
-        return await this.rolesService.hardDelete(roleId);
+        return await this.commandBus.execute(new HardDeleteRoleCommand(roleId));
     }
 
     @MessagePattern({ cmd: 'restore-role' })

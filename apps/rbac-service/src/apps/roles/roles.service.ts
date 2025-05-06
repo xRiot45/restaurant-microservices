@@ -97,17 +97,17 @@ export class RolesService {
     //     return await this.roleRepository.update(roleId, role);
     // }
 
-    async softDelete(roleId: number): Promise<DeleteResponse> {
-        const role: RoleEntity = await this.roleRepository.findOne(roleId);
-        if (!role) {
-            throw new RpcException(new NotFoundException('Role not found!'));
-        }
+    // async softDelete(roleId: number): Promise<DeleteResponse> {
+    //     const role: RoleEntity = await this.roleRepository.findOne(roleId);
+    //     if (!role) {
+    //         throw new RpcException(new NotFoundException('Role not found!'));
+    //     }
 
-        await this.roleRepository.softDelete(roleId);
-        return {
-            status: true,
-        };
-    }
+    //     await this.roleRepository.softDelete(roleId);
+    //     return {
+    //         status: true,
+    //     };
+    // }
 
     async hardDelete(roleId: number): Promise<DeleteResponse> {
         const role: RoleEntity = await this.roleRepository.findOne(roleId);
