@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RoleEntity } from '../apps/roles/entities/role.entity';
+import { UserEntity } from '../apps/users/entities/user.entity';
 
 @Module({
     imports: [
@@ -15,7 +15,7 @@ import { RoleEntity } from '../apps/roles/entities/role.entity';
                 database: configService.get<string>('DB_NAME'),
                 synchronize: true,
                 autoLoadEntities: true,
-                entities: [RoleEntity],
+                entities: [UserEntity],
             }),
             inject: [ConfigService],
         }),

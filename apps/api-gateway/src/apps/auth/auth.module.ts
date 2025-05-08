@@ -7,11 +7,11 @@ import { AuthService } from './auth.service';
     imports: [
         ClientsModule.register([
             {
-                name: 'USERS_SERVICE',
+                name: 'AUTH_SERVICE',
                 transport: Transport.TCP,
                 options: {
                     host: '127.0.0.1',
-                    port: 3003,
+                    port: 3002,
                 },
             },
         ]),

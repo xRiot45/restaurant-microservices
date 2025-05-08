@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RequestLoggerMiddleware } from 'libs/middlewares/request-logger.middleware';
+import { AuthModule } from './apps/auth/auth.module';
 import { RolesModule } from './apps/roles/roles.module';
 
 @Module({
@@ -10,6 +11,7 @@ import { RolesModule } from './apps/roles/roles.module';
             envFilePath: 'apps/api-gateway/.env',
         }),
         RolesModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],
